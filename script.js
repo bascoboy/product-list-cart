@@ -1,120 +1,127 @@
-let productItem=[
+// Define an array of product items
+let productItem = [
     {
         productName: "Waffle with Berries",
-        category:"Waffle",
+        category: "Waffle",
         price: "$ 6.50",
         photo: "waffle-desktop.jpg"
     },
     {
         productName: "Vanilla Bean Crème Brûlée",
-        category:"Crème Brûlée",
+        category: "Crème Brûlée",
         price: "$ 7.00",
         photo: "creme-brulee-desktop.jpg"
     },
     {
         productName: "Macaron Mix of Five",
-        category:"Macaron",
+        category: "Macaron",
         price: "$ 8.00",
         photo: "macaron-desktop.jpg"
     },
     {
         productName: "Classic Tiramisu",
-        category:"Tiramisu",
+        category: "Tiramisu",
         price: "$ 5.50",
         photo: "tiramisu-desktop.jpg"
     },
     {
         productName: "Pistachio Baklava",
-        category:"Baklava",
+        category: "Baklava",
         price: "$ 4.00",
         photo: "baklava-desktop.jpg"
     },
     {
         productName: "Lemon Meringue Pie",
-        category:"Pie",
+        category: "Pie",
         price: "$ 5.00",
         photo: "meringue-desktop.jpg"
     },
     {
         productName: "Red Velvet Cake",
-        category:"Cake",
+        category: "Cake",
         price: "$ 4.50",
         photo: "cake-desktop.jpg"
     },
     {
         productName: "Salted Caramel Brownie",
-        category:"Brownie",
+        category: "Brownie",
         price: "$ 4.50",
         photo: "brownie-desktop.jpg"
     },
     {
         productName: "Vanilla Panna Cotta",
-        category:"Panna Cotta",
+        category: "Panna Cotta",
         price: "$ 6.50",
         photo: "panna-cotta-desktop.jpg"
     }
-]
-//build automatic carts
-var count = 1
-productItem.map((item)=>{
-    document.getElementById("main-list-of-cart").innerHTML = document.getElementById("main-list-of-cart").innerHTML+ 
- `
- <div class="cart">
-<div id="cart-img">
- <img src="assets/images/image-${item.photo}" alt="">
-</div>
-<div id="add-to-cart">
- <a class="add-to-cart-button"> Add to Cart</a>
-</div>
-<div id="cart-cat">
- <span>${item.category}</span>
-</div>
-<div id="cart-title">
- ${item.productName}
-</div>
-<div id="cart-price">
- <b>${item.price}</b>
-</div>
-</div>`;
+];
 
-count++
+// Initialize a counter
+var count = 1;
 
+// Loop through each product item and create HTML content for each product
+productItem.map((item) => {
+    document.getElementById("main-list-of-cart").innerHTML += `
+    <div class="cart">
+        <div id="cart-img">
+            <img src="assets/images/image-${item.photo}" alt="">
+        </div>
+        <div id="add-to-cart">
+            <a class="add-to-cart-button"> Add to Cart</a>
+        </div>
+        <div id="cart-cat">
+            <span>${item.category}</span>
+        </div>
+        <div id="cart-title">
+            ${item.productName}
+        </div>
+        <div id="cart-price">
+            <b>${item.price}</b>
+        </div>
+    </div>`;
+
+    count++;
 })
-//managment add to cart button
+
+// Initialize a counter for cart items
 let cartCount = 1;
 
-/////json
-
-
+// Add event listeners to all "Add to Cart" buttons
 document.querySelectorAll(".add-to-cart-button").forEach((button) => {
     button.addEventListener("click", (e) => {
+        // If the button is not already active
         if (!button.classList.contains("add-to-cart-button-active")) {
-            //count right side title
+            // Update the total number of items in the cart title
             const totalCartTitleCount = (document.getElementById("total-cart-main").children.length) - 1;
             document.getElementById("total-cart-title-count").innerText = ` ( ${totalCartTitleCount} ) `;
-            //confirm button section
-            document.getElementById("total-cart-button").innerHTML=`
+
+            // Update the total cart button section
+            document.getElementById("total-cart-button").innerHTML = `
             <div id="total-cart-button-number">
-            <span id="total-cart-button-number-left">Order Total</span>
-            <span id="total-cart-button-number-right">$46.5</span>
+                <span id="total-cart-button-number-left">Order Total</span>
+                <span id="total-cart-button-number-right">$46.5</span>
             </div>
             <div id="total-cart-button-allert">
                 <p>This is a <b>carbon-neutral</b> delivery</p>
             </div>
-            <div >
-            <button id="total-cart-button-confirm">Confirm Order</button>
+            <div>
+                <button id="total-cart-button-confirm">Confirm Order</button>
+            </div>
             `;
-            document.getElementById("total-cart-button-confirm").addEventListener("click" , (e)=>{
 
-            })
-            //get element of cart
+            // Add event listener to the confirm order button
+            document.getElementById("total-cart-button-confirm").addEventListener("click", (e) => {
+                // Code for confirming the order
+            });
+
+            // Get the product element that was clicked
             let productElement = e.currentTarget.parentElement.parentElement;
             const productTitle = productElement.children[3].innerText;
             const productPrice = parseFloat(productElement.children[4].innerText.replace('$', ''));
             const currentCartImg = e.currentTarget.parentElement.parentElement.children[0];
             currentCartImg.children[0].style.border = "3px solid hsl(14, 86%, 42%)";
 
-            //change button setting
+            // Change the button to active state
             button.classList = "add-to-cart-button-active";
             let cartCount = 1;
             button.innerHTML = `
@@ -134,24 +141,24 @@ document.querySelectorAll(".add-to-cart-button").forEach((button) => {
                 <div class="left-row-of-products">
                     <img class="left-row-of-products-img" src="assets/images/icon-remove-item.svg" alt="">
                 </div>
-                
             `;
             document.getElementById("total-cart-main").appendChild(newCartItem);
 
+            // Function to update the cart display
             const updateCartDisplay = () => {
                 newCartItem.querySelector(".amount-of-cart").innerText = `${cartCount}x`;
                 newCartItem.querySelector(".total-price-of-cart").innerText = `$${(cartCount * productPrice).toFixed(2)}`;
                 updateTotalOrderPrice();
             };
 
-            // Increment button
+            // Add event listener for increment button
             button.querySelector(".increment-button").addEventListener("click", (ei) => {
                 cartCount++;
                 button.querySelector("span").innerText = `${cartCount}`;
                 updateCartDisplay();
             });
 
-            // Decrement button
+            // Add event listener for decrement button
             button.querySelector(".decrement-button").addEventListener("click", (ei) => {
                 if (cartCount > 1) {
                     cartCount--;
@@ -160,7 +167,7 @@ document.querySelectorAll(".add-to-cart-button").forEach((button) => {
                 }
             });
 
-            // Event listener for remove button
+            // Add event listener for remove button
             newCartItem.querySelector(".left-row-of-products-img").addEventListener("click", (ei) => {
                 newCartItem.remove();
                 button.classList.remove("add-to-cart-button-active");
@@ -175,12 +182,13 @@ document.querySelectorAll(".add-to-cart-button").forEach((button) => {
                 updateTotalOrderPrice();
             });
 
-            // Hide empty cart message
+            // Hide the empty cart message
             document.getElementById("total-cart-main-empty").style.display = "none";
             updateTotalOrderPrice();
         }
     });
 
+    // Function to update the total order price
     const updateTotalOrderPrice = () => {
         let totalOrderPrice = 0;
         document.querySelectorAll(".row-of-product").forEach((item) => {
@@ -188,11 +196,12 @@ document.querySelectorAll(".add-to-cart-button").forEach((button) => {
             totalOrderPrice += itemPrice;
         });
         document.getElementById("total-cart-button-number-right").innerText = `$${totalOrderPrice.toFixed(2)}`;
-        document.getElementById("total-cart-button-confirm").addEventListener("click" , (e)=>{
-            const totalCartContent = document.getElementById("total-cart-main").innerHTML 
-            document.getElementById("main-conetent-item").innerHTML = totalCartContent
+
+        // Add event listener to confirm order button
+        document.getElementById("total-cart-button-confirm").addEventListener("click", (e) => {
+            const totalCartContent = document.getElementById("total-cart-main").innerHTML;
+            document.getElementById("main-conetent-item").innerHTML = totalCartContent;
             document.getElementById("popup").style.display = "flex";
-        })
+        });
     };
 });
-
